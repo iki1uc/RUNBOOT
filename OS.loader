@@ -1,0 +1,4 @@
+OS.KERNEL = /boot/kernel.bin
+OS.ENTRY = 0x1000
+OS.MAP = flat
+OS.HANDOFF = jump(OS.ENTRY)

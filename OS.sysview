@@ -1,0 +1,78 @@
+/*
+  OS.sysview
+  Hinweis: Keine Gewähr.
+  Werte können aufgrund von abgenutzter Hardware,
+  Alter, Zustand oder realer Abweichung variieren.
+  OS.sysview zeigt nur Messwerte und mathematische
+  Zuwachsberechnung – keine Garantie.
+*/
+
+OS.sysview = {
+
+  read: function() {
+    return {
+      cpu: OS.hardware.cpu.load,     // %
+      ram: OS.hardware.ram.used,     // GB
+      gpu: OS.hardware.gpu.load,     // %
+      net: OS.net.speed,             // Mbit/s
+      usb: OS.usb.speed,             // Mbit/s
+      ssd: OS.ssd.speed              // MB/s
+    }
+  },
+
+  growth: function(hw) {
+
+    let g = {}
+
+    // USB-Zuwachs (real möglich, mathematisch)
+    g.usb = hw.usb > hw.net
+      ? hw.usb - hw.net
+      : 0
+
+    // SSD-Zuwachs (real möglich, mathematisch)
+    g.ssd = hw.ssd > hw.net
+      ? hw.ssd - hw.net
+      : 0
+
+    return g
+  },
+
+  rating: function(hw) {
+
+    // Alpha / Beta / Gamma / Grün / Gelb / Rot
+    // Bewertung von anderen, nicht vom System selbst
+
+    if (hw.cpu < 20 && hw.ram < 4)
+      return "Gamma · Rot"
+
+    if (hw.cpu < 40 && hw.ram < 8)
+      return "Beta · Gelb"
+
+    if (hw.cpu >= 40 && hw.cpu <= 70)
+      return "Alpha · Grün"
+
+    if (hw.cpu > 80 || hw.gpu > 80)
+      return "Alpha · Rot"
+
+    return "Gamma · Grün"
+  },
+
+  display: function() {
+
+    let hw = this.read()
+    let g  = this.growth(hw)
+    let r  = this.rating(hw)
+
+    console.log("CPU:", hw.cpu + "%")
+    console.log("RAM:", hw.ram + " GB")
+    console.log("GPU:", hw.gpu + "%")
+    console.log("NET:", hw.net + " Mbit/s")
+    console.log("USB:", hw.usb + " Mbit/s")
+    console.log("SSD:", hw.ssd + " MB/s")
+
+    console.log("Zuwachs USB:", g.usb)
+    console.log("Zuwachs SSD:", g.ssd)
+
+    console.log("Bewertung:", r)
+  }
+}

@@ -1,0 +1,8 @@
+masterboot.start = function() {
+
+  let geo = this.load("BOOT.geo")
+  this.apply(geo)
+
+  let danger = OS.sysview.danger(OS.hardware)
+  console.log("Gefahrstufe:", danger)
+}
