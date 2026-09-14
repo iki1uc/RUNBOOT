@@ -28,3 +28,9 @@ const REAL_INPUT = {
     // statt einen Wert einzutippen
     tmp16: null
 };
+// Energie-Schicht QUANDT
+REAL_INPUT.quandt = {
+    volt: 5.1,   // USB-C PD Spannung
+    amp: 3.0,    // Strom
+    cap: 85      // % Energie-Puffer (SuperCap)
+};
