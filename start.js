@@ -1,8 +1,28 @@
-// SYN + QUANDT Wächter
+// start.js · iki1uc · Runtime-Schicht
+// SYN + QUANDT + Roundwork + Boot-Pipeline
+
+import { 
+  DOOR, DOO, SLIDE, WETTE, RESPO, 
+  _243, OS, NC_engine, SCORE, AXIOM 
+} from "./boot.js";
+
+import { BOOT_GEO } from "./boot-geo.js";
+import { REAL_INPUT } from "./real-input.js";
+
+// SYN-Takt
+const SYN = {
+  alive: true,
+  tick() { this.alive = true; }
+};
+
+// QUANDT-Energie
+const QUANDT = REAL_INPUT.quandt;
+
+// Energie + Takt Wächter
 function energyWatch() {
 
     // Energie prüfen
-    if (REAL_INPUT.quandt.cap <= 20) {
+    if (QUANDT.cap <= 20) {
         console.log("QUANDT LOW → safe shutdown");
         SCORE.write("shutdown");
         AXIOM.jump(OS.ENTRY);
@@ -25,3 +45,11 @@ function energyWatch() {
 
     return true;
 }
+
+// Haupt-Start
+export function start() {
+
+    // 1. DOOR
+    DOOR.open();
+
+    //
