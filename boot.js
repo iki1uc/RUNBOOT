@@ -1,20 +1,27 @@
-function boot() {
-  RESPO.log("BOOT START");
+// boot.js · iki1uc · Timing-Schicht
 
-  NC_engine.disk();
-  NC_engine.video();
+export function boot() {
 
-  if (!WETTE.verify(OS.kernel)) {
-    return WETTE.fail();
-  }
+    // 1. DOOR
+    DOOR.open();
 
-  DOO.readSector();
-  SLIDE.relocate(OS.entry);
+    // 2. DOO
+    DOO.readSector();
 
-  SCORE.trace && writeTrace("Kernel loaded");
+    // 3. SLIDE
+    SLIDE.relocate(OS.entry);
 
-  DOOR.action();
-  OS.handoff();
+    // 4. WETTE
+    if (!WETTE.verify(OS.kernel)) {
+        return WETTE.fail();
+    }
 
-  RESPO.ok("BOOT COMPLETE");
+    // 5. RESPO
+    RESPO.check();
+
+    // 6. 243.sync (Takt)
+    _243.sync();
+
+    // Boot-Timing endet hier.
+    // Runtime übernimmt in start.js
 }
